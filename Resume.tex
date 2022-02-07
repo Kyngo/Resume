@@ -1,0 +1,340 @@
+% Document info
+\documentclass{article}
+\author{Arnau 'Kyngo' Martín}
+\title{Resume}
+\pagenumbering{gobble}
+
+% Fonts
+\usepackage{fontspec}
+\setsansfont{Ubuntu}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Document size
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+% Loops
+\usepackage{pgfmath}
+\usepackage{pgffor}
+
+% Photo
+\usepackage{graphicx}
+\graphicspath{ {img/} }
+\newcommand{\Csharp}{%
+  {\settoheight{\dimen0}{C}\kern-.05em \resizebox{!}{\dimen0}{\raisebox{\depth}{\#}}}}
+
+% Indentation
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+% Line break command
+\newcommand{\nl}{\vspace{3mm}}
+
+% Colours
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+% Links
+\usepackage{hyperref}
+
+% Variables
+\newcounter{idx}
+\setcounter{idx}{0}
+
+% Document
+\begin{document}
+
+\setlength{\parindent}{0cm} {
+	% Title
+	{\Huge Arnau Martín} \textcolor{Bittersweet}{Resume}
+	
+	% Photo
+	\vspace*{\dimexpr-\baselineskip-\topskip\relax}	
+	\vbox to 8pt{\hfill\fbox{\includegraphics[height=4cm]{me.jpg}}}
+	
+	% Contact details
+	\section*{Personal details}
+	
+	\textbf{Birth}: July 21st, 1995
+
+	\textbf{Phone}: \textcolor{Green}{\href{tel:+34684001208}{(+34) 684 00 12 08}}
+
+	\textbf{Mail}: \textcolor{Green}{\href{mailto:kyngo@kyngo.net}{kyngo@kyngo.net}}
+	
+	\textbf{Website}: \textcolor{Green}{\href{https://kyngo.net}{https://kyngo.net}}
+	
+	\textbf{Github}: \textcolor{Green}{\href{https://github.com/Kyngo}{https://github.com/Kyngo}}
+
+	% Description
+	\section*{Description}
+	People would use lots of words to describe me,  such as "professional", "responsible", "adaptive", "decisive"...  but I prefer to see myself as just a person who loves his job and does his best when given a challenge or an opportunity. I love computers and development, and I've been programming since I was 12, when I got my very own computer for the first time. I've never stopped ever since.
+	
+	% Formation and Education
+	\section*{Education}
+
+	\textbf{High School}:
+	
+	\tab INS F.X. Lluch i Rafecas - \textit{2012 promotion}
+	
+	\nl
+	\textbf{Professional Formation (C.F.G.M. in Spanish standards)}:
+	
+	\tab INS Joaquim Mir - Networks and Microcomputer Systems - \textit{2014 promotion}
+	
+	\nl
+	\textbf{Professional Formation (C.F.G.S. in Spanish standards)}:
+	
+	\tab INS Joaquim Mir - Computer Systems and Networks Administration - \textit{2017 promotion}
+	
+	\nl
+	\textbf{Professional Formation (C.F.G.S. in Spanish standards)}:
+	
+	\tab INS Joaquim Mir - Web Applications Development - \textit{2018 promotion}
+	
+	% Professional Experience
+	\section*{Professional Experience}
+	
+	% UPC
+	\textbf{Catalonia Politech University - Escola Politècnica Superior d'Enginyeria de Vilanova i la Geltrú}
+	
+	\tab Tech Support - Internal helpdesk and IT technician.
+	
+	\tab \textit{From October 2013 to April 2014}
+	
+	% KUKA
+	\nl
+	\textbf{KUKA Robots Ibérica, S.A.}
+	
+	\tab SysAdmin - Network and Infrastructure Management in the central spanish office of the company, Internal IT
+	
+	\tab \textit{From October 2015 to April 2016}
+	
+	% Spotlio
+	\nl
+	\textbf{Spotlio AG}
+	
+	\tab Full Stack Developer and Systems Engineer
+	
+	\tab \textit {From October 2017 to May 2021}
+	
+	% Offing
+	\nl
+	\textbf{Offing Web Solutions SL}
+	
+	\tab Full Stack Developer and Systems Engineer
+	
+	\tab \textit {From May 2021, currently employed}
+	
+	% Other titles and diplomas
+	\section*{Other titles and diplomas}
+	\textbf{Cisco CCNA: Home and Small Business} - Obtained in May 2013 (due to renew)
+	
+	\nl
+	\textbf{KUKA Robots - (V)KRC4 Programming} - Obtained in April 2016
+	
+	\nl
+	\textbf{Cambridge University - First Certificate of English} - Obtained in September 2021
+
+	% My skills
+	\section*{Skills}    
+
+	\textbf{Frontend}
+	
+	\foreach \lang in {
+		HTML, 
+		CSS, 
+		Sass, 
+		JavaScript, 
+		jQuery, 
+		React,
+		Next.js,
+		Twig
+	} {
+		\ifnum \value{idx} = 0
+			\lang
+			\setcounter{idx}{1}
+		\else
+			\textbf{\lang}
+			\setcounter{idx}{0}
+		\fi
+	}
+	
+	\nl
+	
+	\textbf{Backend}
+	
+	\foreach \lang in {
+		C\Csharp, 
+		Swift, 
+		Node.js, 
+		Express, 
+		Nest.js, 
+		Puppeteer, 
+		Jest, 
+		TypeScript, 
+		PHP, 
+		Symfony,
+		\LaTeX
+	} {
+		\ifnum \value{idx} = 0
+			\lang
+			\setcounter{idx}{1}
+		\else
+			\textbf{\lang}
+			\setcounter{idx}{0}
+		\fi
+	}
+	
+	\nl
+	
+	\textbf{AI}
+	
+	\foreach \lang in {
+		Alexa Skills,
+		Jovo Framework
+	} {
+		\ifnum \value{idx} = 0
+			\lang
+			\setcounter{idx}{1}
+		\else
+			\textbf{\lang}
+			\setcounter{idx}{0}
+		\fi
+	}
+	
+	\nl
+	
+	\textbf{Databases}
+	
+	\foreach \lang in {
+		MySQL,
+		MariaDB,
+		SQLite,
+		MongoDB
+	} {
+		\ifnum \value{idx} = 0
+			\lang
+			\setcounter{idx}{1}
+		\else
+			\textbf{\lang}
+			\setcounter{idx}{0}
+		\fi
+	}
+	
+	\nl
+	
+	\textbf{Other languages}
+	
+	\foreach \lang in {
+		Bash,
+		\LaTeX
+	} {
+		\ifnum \value{idx} = 0
+			\lang
+			\setcounter{idx}{1}
+		\else
+			\textbf{\lang}
+			\setcounter{idx}{0}
+		\fi
+	}
+	
+	\nl
+	
+	\textbf{Known tech}
+	
+	\foreach \skill in {
+		Git, 
+		LDAP,
+		Virtualization, 
+		Apache, 
+		Nginx, 
+		IIS, 
+		SSL,
+		SOAP,
+		REST,
+		GraphQL,
+		FTP, 
+		VPN, 
+		DHCP, 
+		DNS, 
+		SMB, 
+		SSH, 
+		VNC, 
+		RDP, 
+		AWS, 
+		Regex, 
+		CMS, 
+		Unix, 
+		macOS, 
+		Windows
+	} {
+		\ifnum \value{idx} = 0
+			\skill
+			\setcounter{idx}{1}
+		\else
+			\textbf{\skill}
+			\setcounter{idx}{0}
+		\fi
+	}
+	
+	\nl
+	
+	\textbf{Amazon Web Services}
+	
+	\foreach \lang in {
+		EC2,
+		RDS,
+		S3,
+		Lambda,
+		CodeBuild,
+		CodeCommit,
+		CloudFront,
+		CloudWatch Monitoring,
+		API Gateway,
+		VPC,
+		Elastic Beanstalk
+	} {
+		\ifnum \value{idx} = 0
+			\lang
+			\setcounter{idx}{1}
+		\else
+			\textbf{\lang}
+			\setcounter{idx}{0}
+		\fi
+	}
+	
+	\nl There probably is a lot more stuff, but I don't want to overfill this. Also, if I don't know how something works, I'll figure it out and make sure I get the best information (or hands) possible on the matter. \nl
+	
+	\textbf{Other stuff}
+	\begin{itemize}
+		\item I've got some experience with PCI DSS due to former customers requiring such level of security on their servers and code.
+	\end{itemize}
+
+	\section*{Languages}
+	\begin{itemize}
+		\setlength\itemsep{0em}
+		\item Spanish (native)
+		\item Catalan (native)
+		\item English (fluent) - FCE Certificate ID available on my LinkedIn profile
+		\item French (basic) - I studied it for one year in high school
+	\end{itemize}
+	
+	\section*{Additional information}
+	\begin{itemize}
+		\setlength\itemsep{0em}
+		\item European drivers license to drive cars and motorbikes (B permission since January 2017)
+		\item Geographical availability around the Barcelona area
+	\end{itemize}
+	
+	\section*{Trivia}
+	\begin{itemize}
+		\item This resume has been done using \LaTeX \hspace{1mm}- \textcolor{Green}{\href{https://github.com/Kyngo/Resume}{source code}}.
+		\item I've been wearing glasses my entire life.
+		\item I actually enjoy assembling IKEA furniture.
+	\end{itemize}
+	
+}
+\end{document}
