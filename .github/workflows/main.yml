@@ -28,5 +28,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "latest"
-          gh release upload "latest" "artifacts/Resume.pdf"
+          export CURRENT_DATE=`date '+%Y%m%d%H%M%S'`
+          gh release create "$CURRENT_DATE"
+          gh release upload "$CURRENT_DATE" "artifacts/Resume.pdf"
