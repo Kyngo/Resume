@@ -3,10 +3,6 @@ name: CI
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  workflow_dispatch:
 
 jobs:
   build:
@@ -23,11 +19,14 @@ jobs:
           sudo chmod 755 /usr/share/fonts/truetype/Ubuntu*.ttf
 
       - name: Build the project
-        run: xelatex Resume.tex
+        run: |
+          xelatex Resume.tex
+          mkdir artifacts
+          mv Resume.pdf artifacts
         
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${MS_TAG}"
-          gh release upload "${MS_TAG}" "Resume.pdf"
+          gh release create "latest"
+          gh release upload "latest" "artifacts/Resume.pdf"
