@@ -27,7 +27,7 @@ jobs:
         
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.REL_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${MS_TAG}"
           gh release upload "${MS_TAG}" "Resume.pdf"
