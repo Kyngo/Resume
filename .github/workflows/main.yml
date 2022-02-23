@@ -24,3 +24,8 @@ jobs:
 
       - name: Build the project
         run: xelatex Resume.tex
+        
+      - name: Release
+        run: |
+          gh release create "${MS_TAG}"
+          gh release upload "${MS_TAG}" "Resume.pdf"
