@@ -26,6 +26,8 @@ jobs:
         run: xelatex Resume.tex
         
       - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.REL_TOKEN }}
         run: |
           gh release create "${MS_TAG}"
           gh release upload "${MS_TAG}" "Resume.pdf"
