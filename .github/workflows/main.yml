@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare the project for compilation
+        run: |
+          sudo apt install texlive-xetex unzip -y
+          wget https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip -O fonts.zip
+          unzip fonts.zip
+          cp -r  ubuntu-font-family*/*.ttf /usr/share/fonts/truetype/
+          sudo chmod 755 /usr/share/fonts/truetype/Ubuntu*.ttf
+
+      - name: Build the project
+        run: xelatex Resume.pdf
