@@ -23,4 +23,4 @@ jobs:
           sudo chmod 755 /usr/share/fonts/truetype/Ubuntu*.ttf
 
       - name: Build the project
-        run: xelatex Resume.pdf
+        run: xelatex Resume.tex
