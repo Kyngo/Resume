@@ -4,9 +4,9 @@ This is the actual resume I share with HR and talent acquisition staff. As I men
 
 ## Generating the PDF
 
-You must use XeLaTeX or LuaTeX as the compiler. I personally use XeLaTeX on texmaker.
+You must use XeLaTeX or LuaTeX as the compiler. I personally use XeLaTeX, and it is also used by this repo to build it automatically.
 
-The Ubuntu font family has to be installed in order for the resume to build.
+The Ubuntu font family has to be installed in order for the build to work.
 
 An example of how it's built is available in the Github Actions workflow file (`.github/workflows/main.yml`).
 
