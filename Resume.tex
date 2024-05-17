@@ -25,8 +25,6 @@
 % Photo
 \usepackage{graphicx}
 \graphicspath{ {img/} }
-\newcommand{\Csharp}{%
-  {\settoheight{\dimen0}{C}\kern-.05em \resizebox{!}{\dimen0}{\raisebox{\depth}{\#}}}}
 
 % Indentation
 \newcommand\tab[1][0.5cm]{\hspace*{#1}}
@@ -140,6 +138,7 @@
  		\setlength\itemsep{0em}
  		\item \textbf{Cambridge University - First Certificate of English} - Obtained in September 2021 (validation ID: \textbf{B6375755ID})
 		\item \textbf{AWS Solutions Architect - Associate} - Obtained in October 2023 (Validation ID: \textbf{F6LVM9K1V1FQ17W6})
+		\item \textbf{Udacity - Security Engineering Degree} - Obtained in May 2024 (Validation URL: \href{https://confirm.udacity.com/e/76a1644a-98f6-11ee-aa42-eba581f8d839}{Udacity})
   	\end{itemize}
 	%\pagebreak
  
@@ -174,8 +173,6 @@
 	\textbf{Backend}
 	
 	\foreach \lang in {
-		C\Csharp, 
-		Swift, 
 		Node.js, 
 		Express,
 		Strapi,
@@ -237,7 +234,7 @@
 	
 	\nl
 	
-	\textbf{Known tech}
+	\textbf{Services and Key Concepts}
 	
 	\foreach \skill in {
 		Git, 
@@ -303,6 +300,36 @@
 	
 	\nl
 
+	\textbf{Cybersecurity}
+
+	\foreach \lang in {
+		OWASP,
+		Auditing,
+		Networks,
+		Monitoring,
+		Wireshark,
+		osquery,
+		Nmap,
+		Metasploit,
+		Wireless Networking,
+		SAST,
+		CIA Triad,
+		ACL/NACLs,
+		Compliance,
+		Cryptography,
+		Data storage
+	} {
+		\ifnum \value{idx} = 0
+			\lang
+			\setcounter{idx}{1}
+		\else
+			\textbf{\lang}
+			\setcounter{idx}{0}
+		\fi
+	}
+
+	\nl
+
 	\section*{Languages}
 	\begin{itemize}
 		\setlength\itemsep{0em}
@@ -328,7 +355,7 @@
 		\end{itemize}
 		\item Some of my hobbies are traveling, learning and, weirdly enough, assembling IKEA furniture.
 		\item I believe that a happy developer will also be a more productive developer.
-		\item I am "that guy" who knows a lot of useless and random facts. \textit{Did you know that the deadliest animal to ever exist is actually the mosquito?}
+		\item I am "that guy" who knows a lot of useless and random facts. \textit{Did you know that a lightning bolt can be up to five times hotter than the surface of the sun?}
 	\end{itemize}
 	
 }
