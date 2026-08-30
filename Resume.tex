@@ -1,362 +1,342 @@
-% Document info
-\documentclass{article}
-\author{Arnau Martín}
-\title{Resume}
+% =====================================================================
+%  Arnau Martín — Resume
+%  Built with XeLaTeX. See .github/workflows/main.yml
+% ---------------------------------------------------------------------
+%  VARIANT FLAGS — flip these to produce a market-specific version.
+%  Spain/France/Germany: photo is common, keep it.
+%  UK / Ireland / Netherlands / US: set \showphotofalse (anti-bias
+%  screening policies; some ATS auto-reject CVs with photos).
+% =====================================================================
+% 10pt, not 11pt: at 11pt this content runs to a third page with only a few
+% lines on it. 10pt is standard for CVs and keeps it to a clean two pages.
+\documentclass[10pt,a4paper]{article}
+
+\newif\ifshowphoto      \showphototrue
+\newif\ifshowbirthdate  \showbirthdatefalse   % adds no signal, liability abroad
+
+\newcommand{\reviewdate}{August 2026}         % update manually on real edits
+
+% ---- Page geometry --------------------------------------------------
+\usepackage[a4paper,left=15mm,right=15mm,top=13mm,bottom=13mm]{geometry}
 \pagenumbering{gobble}
 
-% Fonts
+% ---- Fonts ----------------------------------------------------------
+% Fonts are loaded BY FILENAME on purpose. Do not "simplify" this to
+% \setsansfont{Ubuntu}.
+%
+% Modern distros ship Ubuntu as a VARIABLE font (Ubuntu[wdth,wght].ttf).
+% Selecting that family by name has two failure modes, both nasty:
+%   1. fontspec cannot derive bold/italic from the family name, so every
+%      \textbf silently degrades to regular weight -- only a warning, so a
+%      wrong-looking PDF still builds successfully.
+%   2. xdvipdfmx cannot embed variable fonts at all and dies with
+%      "xdvipdfmx:fatal: Invalid font: -1 (0)", leaving a 15-byte stub PDF
+%      while xelatex itself reports no LaTeX error.
+% The static Ubuntu 0.83 faces (Ubuntu-R/B/RI/BI.ttf) are what the CI job
+% pulls from assets.ubuntu.com and they embed correctly. Falls back to
+% DejaVu Sans so this still builds on a machine without them.
 \usepackage{fontspec}
-\setsansfont{Ubuntu}
+% Path= forces fontspec to look in the static-font directory FIRST, bypassing
+% the system symlinks in /usr/share/fonts/ that point to variable fonts
+% (which xdvipdfmx cannot embed — see comment block above).
+\IfFontExistsTF{Ubuntu-R.ttf}{%
+  \setsansfont{Ubuntu-R.ttf}[
+    Path           = /home/kyngo/.local/share/fonts/ubuntu-static/,
+    BoldFont       = Ubuntu-B.ttf,
+    ItalicFont     = Ubuntu-RI.ttf,
+    BoldItalicFont = Ubuntu-BI.ttf,
+  ]%
+}{%
+  \IfFontExistsTF{DejaVu Sans}{\setsansfont{DejaVu Sans}}{}%
+}
 \renewcommand{\familydefault}{\sfdefault}
 
-% Document size
-\usepackage{geometry}
-\geometry{
-	a4paper,
-	total={170mm,257mm},
-	left=20mm,
-	top=20mm,
+% ---- Colours & links -----------------------------------------------
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\definecolor{accent}{HTML}{B23A20}
+\definecolor{linkcol}{HTML}{1A6E8E}
+\definecolor{muted}{HTML}{555555}
+\definecolor{todocol}{HTML}{CC0000}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=linkcol,
+  linkcolor=linkcol,
+  pdftitle={Arnau Martin - Resume},
+  pdfauthor={Arnau Martin},
+  pdfsubject={Platform Engineer},
 }
 
-% Loops
-\usepackage{pgfmath}
-\usepackage{pgffor}
+% ---- Section styling -----------------------------------------------
+\usepackage{titlesec}
+% NOTE: \MakeUppercase must live in the before-code argument (4th), not in
+% <format>. At the end of <format> it swallows the [after-code] group and
+% xcolor then fails with "Undefined color `ACCENT'".
+\titleformat{\section}
+  {\normalsize\bfseries\color{accent}}
+  {}{0em}{\MakeUppercase}[\vspace{-0.5em}{\color{accent}\rule{\linewidth}{0.7pt}}]
+\titlespacing*{\section}{0pt}{0.75em}{0.38em}
 
-% Photo
+% ---- Lists ----------------------------------------------------------
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.1em,itemsep=1pt,topsep=1.5pt,parsep=0pt,label=\textbullet}
+
 \usepackage{graphicx}
-\graphicspath{ {img/} }
+\graphicspath{{img/}}
 
-% Indentation
-\newcommand\tab[1][0.5cm]{\hspace*{#1}}
+% ---- Line breaking -------------------------------------------------
+% Ragged right, hyphenation off. Justified body text forced TeX to break words
+% mid-way ("con-tact", "ser-vices"), which looks careless on a CV and splits
+% keywords that an ATS may be matching on. Ragged right removes the need to
+% stretch lines at all, so no hyphens and no overfull boxes.
+\usepackage{ragged2e}
+\RaggedRight
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\tolerance=2000
+\emergencystretch=3em
 
-% Line break command
-\newcommand{\nl}{\vspace{3mm}}
+% ---- Helpers --------------------------------------------------------
+% Single job: Role | Company, right-aligned dates
+\newcommand{\job}[3]{%
+  \vspace{0.4em}%
+  \noindent\textbf{#1} \textcolor{muted}{\textbar} #2 \hfill \textcolor{muted}{\small\textit{#3}}%
+  \par\vspace{0.1em}%
+}
+% Company banner for a multi-role tenure (shows internal progression)
+\newcommand{\companyhdr}[3]{%
+  \vspace{0.4em}%
+  \noindent\textbf{#2} \hfill \textcolor{muted}{\small\textit{#3}}%
+  \par\vspace{-0.1em}%
+  \noindent\textcolor{muted}{\small #1}\par\vspace{0.1em}%
+}
+% A role nested under \companyhdr
+\newcommand{\subrole}[2]{%
+  \vspace{0.18em}%
+  \noindent\hspace{0.8em}\textbf{\small #1} \hfill \textcolor{muted}{\small\textit{#2}}%
+  \par\vspace{0.05em}%
+}
+\newcommand{\skillline}[2]{\noindent\textbf{#1:} #2\par\vspace{0.22em}}
+% Obvious placeholder — nothing here is invented, you fill it in.
+\newcommand{\todo}[1]{{\color{todocol}\textbf{[FILL IN: #1]}}}
 
-% Colours
-\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\setlength{\parindent}{0pt}
 
-% Links
-\usepackage{hyperref}
-
-% Variables
-\newcounter{idx}
-\setcounter{idx}{0}
-
-% Document
+% =====================================================================
 \begin{document}
 
-\setlength{\parindent}{0cm} {
-	% Title
-	{\Huge Arnau Martín} \textcolor{Bittersweet}{Resume}
-	
-	% Photo
-	\vspace*{\dimexpr-\baselineskip-\topskip\relax}	
-	\vbox to 8pt{\hfill\fbox{\includegraphics[height=5cm]{me.jpg}}}
-	
-	% Contact details
-	\section*{Personal details}
-	
-	\textbf{Birth}: July 21st, 1995
+% ---------------- Header ----------------
+\begin{minipage}[t]{\ifshowphoto 0.74\linewidth\else\linewidth\fi}
+  \vspace{0pt}
+  {\Huge\textbf{Arnau Martín}}\\[0.26em]
+  {\large\color{accent}Platform Engineer \textcolor{muted}{\textbar} Security Champion}\\[0.5em]
+  {\small\raggedright   % raggedright: forced breaks here would otherwise
+                        % stretch the contact line (underfull hbox)
+  \href{mailto:kyngo@kyngo.net}{kyngo@kyngo.net} \textcolor{muted}{\textbullet}
+  \href{https://kyngo.net}{kyngo.net} \textcolor{muted}{\textbullet}
+  \href{https://github.com/Kyngo}{github.com/Kyngo} \textcolor{muted}{\textbullet}
+  \href{https://linkedin.com/in/arnaumartin}{linkedin.com/in/arnaumartin}\\[0.18em]
+  \textcolor{muted}{Vilanova i la Geltrú (Barcelona area), Spain \textbullet{} 3+ years fully
+  remote for an international employer}%
+  \ifshowbirthdate\textcolor{muted}{ \textbullet{} Born July 21, 1995}\fi
+  }
+\end{minipage}%
+\ifshowphoto
+\hfill
+\begin{minipage}[t]{0.22\linewidth}
+  \vspace{0pt}
+  \raggedleft\includegraphics[height=3.2cm]{me.jpg}
+\end{minipage}
+\fi
 
-	\textbf{Mail}: \textcolor{Green}{\href{mailto:kyngo@kyngo.net}{kyngo@kyngo.net}}
-	
-	\textbf{Website}: \textcolor{Green}{\href{https://kyngo.net}{https://kyngo.net}}
-	
-	\textbf{Github}: \textcolor{Green}{\href{https://github.com/Kyngo}{https://github.com/Kyngo}}
-	
-	\textbf{LinkedIn}: \textcolor{Green}{\href{https://linkedin.com/in/arnaumartin}{https://linkedin.com/in/arnaumartin}}
+% ---------------- Summary ----------------
+\section*{Summary}
+Platform Engineer with nearly 9 years of continuous experience. I build the internal
+tooling, CI/CD pipelines and dashboards that every engineering team at TUI Musement
+(\textasciitilde200 engineers, \textasciitilde800 repositories) ships on. I grew into platform
+work from full-stack delivery and AWS operations, so the platforms I build are shaped by
+having been on the receiving end of them. \textbf{Moving production systems without
+disrupting them is the thread through my career}: two services between AWS accounts with
+zero downtime, several off VPS hosting onto AWS with seconds of downtime, and an
+\textasciitilde800-repository estate onto self-managed GitLab in phases. Security Champion
+since 2024; currently building AI agents on AWS Bedrock.
 
-	\textbf{Last review}: \today
+% ---------------- Experience ----------------
+\section*{Experience}
 
-	% Description
-	\section*{Introduction}
-	People would use lots of words to describe me,  such as "professional", "responsible", "adaptive", "decisive"...  
-	but I prefer to see myself as just a person who loves his job and does his best when given a challenge or an opportunity. 
-	I love computers and development, and I've been programming since I was 12, when I got my very own computer for the first time. 
-	I haven't stopped ever since.
-	
-	% Formation and Education
-	\section*{Education}
+\job{Platform Engineer}{TUI Musement}{Jan 2023 -- Present}
+\vspace{-0.15em}
+\noindent\textcolor{muted}{\small Palma de Mallorca area \textbullet{} fully remote}\par\vspace{0.1em}
+\begin{itemize}
+  \item Platform, tooling and dashboards used by \textbf{every engineering team in the
+  business --- around 200 engineers}, contractors included.
+  \item \textbf{Standardised CI/CD across \textasciitilde800 repositories}, so the whole
+  estate builds and deploys uniformly instead of per-team improvisation.
+  \item Migrated the full \textasciitilde800-repository estate from GitLab.com to a
+  dedicated self-managed instance, phased project by project.
+  \item Introduced \textbf{DORA delivery metrics} and observability standards on Datadog.
+  \item Surfaced recurring cloud cost overruns worth \textbf{thousands of dollars per
+  month}.
+  \item Built Python tooling that lets engineers set projects up locally on their own.
+  \item Built AI agents using Kiro and AWS Bedrock, applying LLM tooling to internal
+  developer workflows.
+  \item \textbf{Security Champion since May 2024}, owning secure-development practice and
+  acting as the security point of contact.
+\end{itemize}
 
-	\textbf{Professional Formation (C.F.G.M. in Spanish standards)}:
-	
-	\tab INS Joaquim Mir - Networks and Microcomputer Systems - \textit{2014 promotion}
-	
-	\nl
-	\textbf{Professional Formation (C.F.G.S. in Spanish standards)}:
-	
-	\tab INS Joaquim Mir - Computer Systems and Networks Administration - \textit{2017 promotion}
-	
-	\nl
-	\textbf{Professional Formation (C.F.G.S. in Spanish standards)}:
-	
-	\tab INS Joaquim Mir - Web Applications Development - \textit{2018 promotion}
+\job{Full Stack Developer}{Omnios}{Mar 2022 -- Jan 2023}
+\vspace{-0.15em}
+\noindent\textcolor{muted}{\small Barcelona \textbullet{} hybrid}\par\vspace{0.1em}
+\begin{itemize}
+  \item Owned developer experience (QoL) for the company's full-stack developers.
+  \item Designed project server infrastructure as code with Terraform.
+  \item Built data-collection services and social-media crawlers in Node.js and Python.
+  \item Delivered client projects in PHP (Laravel) and Node.js (React, Express).
+  \item[] \textcolor{muted}{\small Client work here is covered by an NDA, so it is
+  described in general terms only.}
+\end{itemize}
 
-	% Professional Experience
-	\section*{Professional Experience}
+\job{Senior Full Stack Developer \& Systems Administrator}{Offing Web Solutions}{May 2021 -- Mar 2022}
+\vspace{-0.15em}
+\noindent\textcolor{muted}{\small Vilanova i la Geltrú \textbullet{} hybrid}\par\vspace{0.1em}
+\begin{itemize}
+  \item Delivered \textbf{four projects for three clients} as a developer, in PHP, Node.js
+  and React.
+  \item \textbf{Administered all of the company's AWS accounts} alongside the development
+  work, plus data analysis across client projects.
+\end{itemize}
 
-	% Spotlio
-	\nl
-	\textbf{Spotlio}
-	
-	\tab Full Stack Developer and SysAdmin / Booking Platform and APIs, managing servers and services on AWS
-	
-	\tab \textit{From March 2018 to May 2021}
-	
-	% Offing
-	\nl
-	\textbf{Offing Web Solutions}
-	
-	\tab Independent Consultant for migrating projects to the AWS Cloud
-	
-	\tab \textit{From Feb 2019 to October 2019}
-	
-	\tab Full Stack Developer and SysAdmin / Multiple projects for different clients in PHP, Node.js and React
-	
-	\tab \textit{From May 2021 to March 2022}
-	
-	% Omnios
-	\nl
-	\textbf{Omnios Cognitive Solutions}
-	
-	\tab Full Stack Developer / Multiple projects for different clients in PHP, Node.js, Vue and React
-	
-	\tab \textit{From March 2022 to January 2023}
-	
-	% TUI
-	\nl
-	\textbf{TUI}
-	
-	\tab Platform Engineer / Improving the development of products with internal tools and templates
-	
-	\tab \textit{From January 2023, currently employed}
-	
-	% Other titles and diplomas
-	\section*{Other titles and diplomas}
-	
-	\begin{itemize}
- 		\setlength\itemsep{0em}
- 		\item \textbf{Cambridge University - First Certificate of English} - Obtained in September 2021 (validation ID: \textbf{B6375755ID})
-		\item \textbf{AWS Solutions Architect - Associate} - Obtained in October 2023 (Validation ID: \textbf{F6LVM9K1V1FQ17W6})
-		\item \textbf{Udacity - Security Engineering Degree} - Obtained in May 2024 (Validation URL: \href{https://confirm.udacity.com/e/76a1644a-98f6-11ee-aa42-eba581f8d839}{Udacity})
-  	\end{itemize}
-	%\pagebreak
- 
-	% My skills
-	\section*{Skills}    
-	
-	\textbf{Frontend}
-	
-	\foreach \lang in {
-		HTML, 
-		CSS, 
-		Sass, 
-		JavaScript, 
-		jQuery, 
-		React,
-		Next.js,
-		Twig,
-		Blade,
-		Vue
-	} {
-		\ifnum \value{idx} = 0
-			\lang
-			\setcounter{idx}{1}
-		\else
-			\textbf{\lang}
-			\setcounter{idx}{0}
-		\fi
-	}
-	
-	\nl
-	
-	\textbf{Backend}
-	
-	\foreach \lang in {
-		Node.js, 
-		Express,
-		Strapi,
-		Nest.js, 
-		Puppeteer, 
-		Jest, 
-		TypeScript, 
-		Python, 
-		Java, 
-		PHP, 
-		Symfony,
-		Laravel
-	} {
-		\ifnum \value{idx} = 0
-			\lang
-			\setcounter{idx}{1}
-		\else
-			\textbf{\lang}
-			\setcounter{idx}{0}
-		\fi
-	}
-	
-	\nl
-	
-	\textbf{Databases}
-	
-	\foreach \lang in {
-		MySQL,
-		MariaDB,
-		SQLite,
-		MongoDB,
-		PostgreSQL
-	} {
-		\ifnum \value{idx} = 0
-			\lang
-			\setcounter{idx}{1}
-		\else
-			\textbf{\lang}
-			\setcounter{idx}{0}
-		\fi
-	}
-	
-	\nl
-	
-	\textbf{Other languages}
-	
-	\foreach \lang in {
-		Bash,
-		\LaTeX
-	} {
-		\ifnum \value{idx} = 0
-			\lang
-			\setcounter{idx}{1}
-		\else
-			\textbf{\lang}
-			\setcounter{idx}{0}
-		\fi
-	}
-	
-	\nl
-	
-	\textbf{Services and Key Concepts}
-	
-	\foreach \skill in {
-		Git, 
-		LDAP,
-		Virtualization, 
-		Docker,
-		Apache, 
-		Nginx, 
-		SOAP, 
-		REST,
-		GraphQL,
-		Regex, 
-		CMS, 
-		Unix, 
-		macOS, 
-		Windows,
-		PCI DSS
-	} {
-		\ifnum \value{idx} = 0
-			\skill
-			\setcounter{idx}{1}
-		\else
-			\textbf{\skill}
-			\setcounter{idx}{0}
-		\fi
-	}
-	
-	\nl
-	
-	\textbf{Amazon Web Services}
-	
-	\foreach \lang in {
-		EC2,
-		RDS,
-		ElastiCache,
-		S3,
-		Lambda,
-		CodeBuild,
-		CodePipeline,
-		CodeCommit,
-		CloudFront,
-		CloudWatch Monitoring,
-		API Gateway,
-		VPC,
-		Elastic Beanstalk,
-		Certificate Manager,
-		SNS,
-		VPC, 
-		Certificate Manager, 
-		KMS, 
-		ECS, 
-		Route 53, 
-		SSM
-	} {
-		\ifnum \value{idx} = 0
-			\lang
-			\setcounter{idx}{1}
-		\else
-			\textbf{\lang}
-			\setcounter{idx}{0}
-		\fi
-	}
-	
-	\nl
+\job{Systems Consultant (freelance)}{Offing Web Solutions}{Feb 2019 -- Oct 2019}
+\vspace{-0.15em}
+\noindent\textcolor{muted}{\small Independent engagement, held alongside my role at Spotlio}\par\vspace{0.1em}
+\begin{itemize}
+  \item Led the company's move to AWS, migrating \textbf{at least three services off VPS
+  hosting with only seconds of downtime}.
+  \item Introduced CI/CD pipelines and deployment systems as part of the transition.
+\end{itemize}
 
-	\textbf{Cybersecurity}
+\companyhdr{Booking platform serving \textbf{thousands of bookings a day} --- hotels, lift
+tickets, equipment rental, transfers and in-destination services --- for ski-industry
+clients across North America and Australia \textbullet{} Vilanova i la Geltrú \textbullet{}
+on-site}{Spotlio}{Oct 2017 -- May 2021}
+\vspace{0.1em}
+% Plain words, not an arrow: U+2192 does not exist in Ubuntu-R.ttf, so
+% \textrightarrow renders as a tofu box and extracts as U+FFFD in ATS parsers.
+\noindent\hspace{0.8em}\textcolor{muted}{\small Promoted twice: intern, then junior,
+then senior.}\par
 
-	\foreach \lang in {
-		OWASP,
-		Auditing,
-		Networks,
-		Monitoring,
-		Wireshark,
-		osquery,
-		Nmap,
-		Metasploit,
-		Wireless Networking,
-		SAST,
-		CIA Triad,
-		ACL/NACLs,
-		Compliance,
-		Cryptography,
-		Data storage
-	} {
-		\ifnum \value{idx} = 0
-			\lang
-			\setcounter{idx}{1}
-		\else
-			\textbf{\lang}
-			\setcounter{idx}{0}
-		\fi
-	}
+% Company repeated on each sub-role on purpose: the page break falls inside this
+% tenure, so without it the junior/intern roles start page 2 with no employer
+% next to them. It also helps ATS parsers bind each role to its company.
+\subrole{Systems Engineer / Senior Developer}{Spotlio \textbullet{} Jan 2021 -- May 2021}
+\begin{itemize}[leftmargin=1.9em]
+  \item Owned integrations with third-party service providers.
+  \item Built the APIs behind every platform and service the company offered.
+  \item Supported frontend development of the booking platform.
+\end{itemize}
 
-	\nl
+\subrole{Systems Engineer / Junior Developer}{Spotlio \textbullet{} Apr 2018 -- Dec 2020}
+\begin{itemize}[leftmargin=1.9em]
+  \item Built the new version of the booking platform, and features for the application
+  management platform.
+  \item Developed APIs for third-party integrations, and designed and implemented several
+  push-notification systems.
+  \item Introduced continuous integration and delivery (CI/CD) systems.
+  \item Analysed project infrastructure and \textbf{migrated two inherited services
+  between AWS accounts with zero downtime} following organisational changes --- one of
+  them acquired with another company.
+\end{itemize}
 
-	\section*{Languages}
-	\begin{itemize}
-		\setlength\itemsep{0em}
-		\item Spanish (native)
-		\item Catalan (native)
-		\item English (fluent) - FCE Certificate ID available on my LinkedIn profile
-		\item French (basic)
-	\end{itemize}
-	
-	\section*{Additional information}
-	\begin{itemize}
-		\setlength\itemsep{0em}
-		\item European drivers license to drive cars and motorbikes (Spanish B permission since January 2017)
-		\item Geographical availability around the Barcelona and northern Tarragona areas
-	\end{itemize}
-	
-	\section*{Trivia}
-	\begin{itemize}
-		\item This resume has been written using \LaTeX, and generated via Github Actions.
-		\begin{itemize}
-			\item \textcolor{Green}{\href{https://github.com/Kyngo/Resume}{Source code}}
-			\item \textcolor{Green}{\href{https://github.com/Kyngo/Resume/releases/latest}{Latest revision}}
-		\end{itemize}
-		\item Some of my hobbies are traveling, learning and, weirdly enough, assembling IKEA furniture.
-		\item I believe that a happy developer will also be a more productive developer.
-		\item I am "that guy" who knows a lot of useless and random facts. \textit{Did you know that a lightning bolt can be up to five times hotter than the surface of the sun?}
-	\end{itemize}
-	
-}
+\subrole{PHP Developer (internship)}{Spotlio \textbullet{} Oct 2017 -- Apr 2018}
+\begin{itemize}[leftmargin=1.9em]
+  \item Analysed server logs to map the purchase funnel; built a backoffice to query the
+  processed analytics.
+\end{itemize}
+
+% ---------------- Projects ----------------
+\section*{Selected Projects}
+\begin{itemize}
+  \item \textbf{Self-hosted homelab \& automation platform} --- Proxmox host running a
+  self-hosted LLM agent, Home Assistant with Zigbee devices and supporting services,
+  administered as code. Where I try platform ideas before proposing them at work.
+  \item \textbf{\href{https://kyngo.net}{kyngo.net}} --- personal site and technical blog,
+  built with Next.js and deployed continuously on every push.
+  \item \textbf{This resume} --- written in \LaTeX{} and released automatically by GitHub
+  Actions. \href{https://github.com/Kyngo/Resume}{Source} \textcolor{muted}{\textbar}
+  \href{https://github.com/Kyngo/Resume/releases/latest}{Latest build}
+\end{itemize}
+
+% ---------------- Skills ----------------
+\section*{Technical Skills}
+\skillline{Cloud \& Infrastructure}{AWS (EC2, ECS, Lambda, S3, RDS, ElastiCache, VPC,
+CloudFront, Route~53, API Gateway, Elastic Beanstalk, CloudWatch, SNS, SSM, KMS,
+Certificate Manager, Bedrock), Terraform, Docker, Nginx, Apache, Linux/Unix}
+\skillline{CI/CD \& Automation}{GitLab CI (incl.\ self-managed GitLab administration),
+GitHub Actions, AWS CodePipeline, CodeBuild, CodeCommit, Git, Bash, pipeline
+standardisation at scale}
+\skillline{Observability \& Delivery Metrics}{Datadog, DORA metrics, CloudWatch,
+cloud cost analysis}
+\skillline{AI \& Data Collection}{AWS Bedrock, Kiro, AI agent development, Puppeteer,
+Selenium WebDriver}
+\skillline{Languages}{TypeScript, JavaScript, Python, PHP, Java, Bash, SQL, \LaTeX}
+\skillline{Backend}{Node.js, Express, Laravel, Symfony, REST, GraphQL}
+\skillline{Frontend}{React, Next.js, Vue, HTML, CSS, Sass}
+\skillline{Data}{PostgreSQL, MySQL, MariaDB, MongoDB, SQLite}
+\skillline{Security}{Secure development practice, OWASP, SAST, auditing, cryptography,
+PCI~DSS compliance, Wireshark, Nmap, osquery}
+% ---------------------------------------------------------------------
+% Kubernetes/Helm are listed SEPARATELY and honestly labelled. Arnau's
+% production orchestration experience is ECS (already listed under AWS); K8s
+% is self-described as "I can hold my own, not an expert". Keeping it on its
+% own line clears the keyword filter without claiming production seniority
+% he would have to defend in a technical interview.
+% ---------------------------------------------------------------------
+\skillline{Working knowledge}{Kubernetes, Helm}
+
+% ---------------- Certifications ----------------
+\section*{Certifications}
+\begin{itemize}
+  \item \textbf{AWS Certified Solutions Architect -- Associate} --- Amazon Web Services.
+  Issued Oct 2023, \textbf{valid until Oct 2026}. Credential ID F6LVM9K1V1FQ17W6.
+  \item \textbf{Security Engineer Nanodegree} --- Udacity, Apr 2024.
+  \href{https://confirm.udacity.com/e/76a1644a-98f6-11ee-aa42-eba581f8d839}{Verify}
+  \item \textbf{First Certificate in English (B2)} --- Cambridge English, Sep 2021.
+  Credential ID B6375755.
+\end{itemize}
+
+% ---------------- Education ----------------
+\section*{Education}
+% raggedright: the long diploma names cannot be justified in one line without
+% an overfull hbox (text bleeding past the right margin).
+\begingroup\raggedright
+\noindent All at INS Joaquim Mir. CFGS/CFGM are Spanish vocational qualifications (EQF for
+international comparison).
+\begin{itemize}
+  \item \textbf{Web Application Development} --- Higher Vocational Diploma (CFGS, EQF~5)
+  --- \textit{Class of 2018}
+  \item \textbf{Computer Systems \& Network Administration} --- Higher Vocational Diploma
+  (CFGS, EQF~5) --- \textit{Class of 2017}
+  \item \textbf{Networks \& Microcomputer Systems} --- Vocational Diploma (CFGM, EQF~4)
+  --- \textit{Class of 2014}
+\end{itemize}
+\endgroup
+
+% ---------------- Languages ----------------
+\section*{Languages}
+\textbf{Spanish} --- native \quad \textcolor{muted}{\textbullet} \quad
+\textbf{Catalan} --- native \quad \textcolor{muted}{\textbullet} \quad
+\textbf{English} --- professional working proficiency (daily use in an international
+organisation; Cambridge FCE) \quad \textcolor{muted}{\textbullet} \quad
+\textbf{French} --- basic
+
+% ---------------- Beyond work ----------------
+\section*{Beyond Work}
+Traveling, tinkering with self-hosted infrastructure, and --- oddly enough --- assembling
+IKEA furniture. Also a collector of useless facts: a lightning bolt can be up to five times
+hotter than the surface of the sun.
+
+\vspace{0.6em}
+{\footnotesize\color{muted}Last reviewed: \reviewdate}
+
 \end{document}

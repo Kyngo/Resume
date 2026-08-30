@@ -2,6 +2,10 @@
 
 This is the actual resume I share with HR and talent acquisition staff. As I mention in it, it is done entirely in LaTeX.
 
+## Disclaimer
+
+Updating this resume does not mean I am actively looking for a new job. I maintain it as a living document so it stays accurate and ready when needed.
+
 ## Generating the PDF
 
 You must use XeLaTeX or LuaTeX as the compiler. I personally use XeLaTeX, and it is also used by this repo to build it automatically.
