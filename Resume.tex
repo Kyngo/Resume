@@ -36,12 +36,14 @@
 % pulls from assets.ubuntu.com and they embed correctly. Falls back to
 % DejaVu Sans so this still builds on a machine without them.
 \usepackage{fontspec}
-% Path= forces fontspec to look in the static-font directory FIRST, bypassing
-% the system symlinks in /usr/share/fonts/ that point to variable fonts
-% (which xdvipdfmx cannot embed — see comment block above).
+% Path= forces fontspec to load from a project-local fonts/ directory,
+% bypassing system symlinks that point to variable fonts (which xdvipdfmx
+% cannot embed — see comment block above).
+% Locally: ln -s ~/.local/share/fonts/ubuntu-static fonts
+% CI: the workflow copies the downloaded .ttf files into fonts/
 \IfFontExistsTF{Ubuntu-R.ttf}{%
   \setsansfont{Ubuntu-R.ttf}[
-    Path           = /home/kyngo/.local/share/fonts/ubuntu-static/,
+    Path           = fonts/,
     BoldFont       = Ubuntu-B.ttf,
     ItalicFont     = Ubuntu-RI.ttf,
     BoldItalicFont = Ubuntu-BI.ttf,

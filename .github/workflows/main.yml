@@ -8,29 +8,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install OS dependencies
         run: |
-          sudo apt install texlive-xetex unzip -y
-         
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex texlive-latex-extra texlive-fonts-recommended
+
       - name: Install fonts
         run: |
-          wget https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip -O fonts.zip
-          unzip fonts.zip
-          sudo cp -r  ubuntu-font-family*/*.ttf /usr/share/fonts/truetype/
-          sudo chmod 755 /usr/share/fonts/truetype/Ubuntu*.ttf
+          wget -q https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip -O fonts.zip
+          unzip -q fonts.zip
+          mkdir -p fonts
+          cp ubuntu-font-family*/*.ttf fonts/
 
       - name: Build the project
         run: |
-          xelatex Resume.tex
-          mkdir artifacts
+          xelatex -interaction=nonstopmode Resume.tex
+          xelatex -interaction=nonstopmode Resume.tex
+          mkdir -p artifacts
           mv Resume.pdf artifacts
-        
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          export CURRENT_DATE=`date '+%Y%m%d%H%M%S'`
+          CURRENT_DATE=$(date '+%Y%m%d%H%M%S')
           gh release create "$CURRENT_DATE"
           gh release upload "$CURRENT_DATE" "artifacts/Resume.pdf"
