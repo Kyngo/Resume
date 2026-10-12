@@ -2,22 +2,20 @@
 %  Arnau Martín — Resume
 %  Built with XeLaTeX. See .github/workflows/main.yml
 % ---------------------------------------------------------------------
-%  VARIANT FLAGS — flip these to produce a market-specific version.
-%  Spain/France/Germany: photo is common, keep it.
-%  UK / Ireland / Netherlands / US: set \showphotofalse (anti-bias
-%  screening policies; some ATS auto-reject CVs with photos).
+%  No photo, by design. A photo adds no signal for international and
+%  remote applications: anti-bias screening policies penalise it and
+%  some ATS parsers auto-reject CVs that carry one.
 % =====================================================================
 % 10pt, not 11pt: at 11pt this content runs to a third page with only a few
 % lines on it. 10pt is standard for CVs and keeps it to a clean two pages.
 \documentclass[10pt,a4paper]{article}
 
-\newif\ifshowphoto      \showphototrue
 \newif\ifshowbirthdate  \showbirthdatefalse   % adds no signal, liability abroad
 
-\newcommand{\reviewdate}{August 2026}         % update manually on real edits
+\newcommand{\reviewdate}{October 2026}         % update manually on real edits
 
 % ---- Page geometry --------------------------------------------------
-\usepackage[a4paper,left=15mm,right=15mm,top=13mm,bottom=13mm]{geometry}
+\usepackage[a4paper,left=15mm,right=15mm,top=12mm,bottom=12mm]{geometry}
 \pagenumbering{gobble}
 
 % ---- Fonts ----------------------------------------------------------
@@ -76,14 +74,11 @@
 \titleformat{\section}
   {\normalsize\bfseries\color{accent}}
   {}{0em}{\MakeUppercase}[\vspace{-0.5em}{\color{accent}\rule{\linewidth}{0.7pt}}]
-\titlespacing*{\section}{0pt}{0.75em}{0.38em}
+\titlespacing*{\section}{0pt}{1.0em}{0.25em}
 
 % ---- Lists ----------------------------------------------------------
 \usepackage{enumitem}
-\setlist[itemize]{leftmargin=1.1em,itemsep=1pt,topsep=1.5pt,parsep=0pt,label=\textbullet}
-
-\usepackage{graphicx}
-\graphicspath{{img/}}
+\setlist[itemize]{leftmargin=1.1em,itemsep=0.5pt,topsep=1pt,parsep=0pt,label=\textbullet}
 
 % ---- Line breaking -------------------------------------------------
 % Ragged right, hyphenation off. Justified body text forced TeX to break words
@@ -127,7 +122,7 @@
 \begin{document}
 
 % ---------------- Header ----------------
-\begin{minipage}[t]{\ifshowphoto 0.74\linewidth\else\linewidth\fi}
+\begin{minipage}[t]{\linewidth}
   \vspace{0pt}
   {\Huge\textbf{Arnau Martín}}\\[0.26em]
   {\large\color{accent}Platform Engineer \textcolor{muted}{\textbar} Security Champion}\\[0.5em]
@@ -137,30 +132,24 @@
   \href{https://kyngo.net}{kyngo.net} \textcolor{muted}{\textbullet}
   \href{https://github.com/Kyngo}{github.com/Kyngo} \textcolor{muted}{\textbullet}
   \href{https://linkedin.com/in/arnaumartin}{linkedin.com/in/arnaumartin}\\[0.18em]
-  \textcolor{muted}{Vilanova i la Geltrú (Barcelona area), Spain \textbullet{} 3+ years fully
-  remote for an international employer}%
+  \textcolor{muted}{Vilanova i la Geltrú (Barcelona area), Spain \textbullet{} three years and
+  nine months fully remote for an international employer}%
   \ifshowbirthdate\textcolor{muted}{ \textbullet{} Born July 21, 1995}\fi
   }
 \end{minipage}%
-\ifshowphoto
-\hfill
-\begin{minipage}[t]{0.22\linewidth}
-  \vspace{0pt}
-  \raggedleft\includegraphics[height=3.2cm]{me.jpg}
-\end{minipage}
-\fi
 
 % ---------------- Summary ----------------
 \section*{Summary}
-Platform Engineer with nearly 9 years of continuous experience. I build the internal
-tooling, CI/CD pipelines and dashboards that every engineering team at TUI Musement
-(\textasciitilde200 engineers, \textasciitilde800 repositories) ships on. I grew into platform
-work from full-stack delivery and AWS operations, so the platforms I build are shaped by
-having been on the receiving end of them. \textbf{Moving production systems without
-disrupting them is the thread through my career}: two services between AWS accounts with
-zero downtime, several off VPS hosting onto AWS with seconds of downtime, and an
-\textasciitilde800-repository estate onto self-managed GitLab in phases. Security Champion
-since 2024; currently building AI agents on AWS Bedrock.
+Platform Engineer with nine years in software delivery, the last three and a half building the
+internal platform at TUI Musement (\textasciitilde200 engineers, \textasciitilde800
+repositories): the tooling, CI/CD pipelines and dashboards every team ships on. I came to
+platform work from full-stack delivery and AWS operations, so the platforms I build are shaped
+by having been on the receiving end of them. \textbf{Moving production systems without
+disrupting them is the thread through my career}: two services between AWS accounts with zero
+downtime, several off VPS hosting onto AWS with seconds of downtime, and an
+\textasciitilde800-repository estate onto self-managed GitLab in six months. Nine years of
+continuous employment, no gaps between roles. Security Champion since 2024, currently building
+AI agents on AWS Bedrock.
 
 % ---------------- Experience ----------------
 \section*{Experience}
@@ -171,18 +160,26 @@ since 2024; currently building AI agents on AWS Bedrock.
 \begin{itemize}
   \item Platform, tooling and dashboards used by \textbf{every engineering team in the
   business --- around 200 engineers}, contractors included.
-  \item \textbf{Standardised CI/CD across \textasciitilde800 repositories}, so the whole
-  estate builds and deploys uniformly instead of per-team improvisation.
+  \item \textbf{Standardised CI/CD across \textasciitilde800 repositories}: builds and
+  deployments went from \textbf{weeks to a maximum of hours}, and the estate now ships
+  \textbf{dozens of releases a week} across internal and client-facing products.
   \item Migrated the full \textasciitilde800-repository estate from GitLab.com to a
-  dedicated self-managed instance, phased project by project.
-  \item Introduced \textbf{DORA delivery metrics} and observability standards on Datadog.
-  \item Surfaced recurring cloud cost overruns worth \textbf{thousands of dollars per
-  month}.
-  \item Built Python tooling that lets engineers set projects up locally on their own.
-  \item Built AI agents using Kiro and AWS Bedrock, applying LLM tooling to internal
-  developer workflows.
-  \item \textbf{Security Champion since May 2024}, owning secure-development practice and
-  acting as the security point of contact.
+  self-managed instance in \textbf{six months}: two months of inventory and analysis, then
+  batches of \textasciitilde100 repositories, with hands-on support for pipelines and base
+  images.
+  \item Introduced \textbf{DORA delivery metrics} (frequency, lead time, change failure rate,
+  MTTR) and Datadog observability standards across engineering.
+  \item Cut cloud spend by \textbf{removing over-provisioned CI runners} and by surfacing
+  over-resourced services to their owners --- recurring overruns worth \textbf{thousands of
+  dollars per month}.
+  \item Built Python tooling that \textbf{saved engineers hours of manual preparation} before
+  each migration batch, and \textbf{days of manual data analysis} for the platform team
+  afterwards.
+  \item Built AI agents with \textbf{LangGraph} and \textbf{Strands} on AWS Bedrock, applying
+  LLM tooling to internal developer workflows.
+  \item \textbf{Security Champion since May 2024}: triaged a few dozen leaked secrets and
+  critical vulnerabilities, and ran proactive security reviews before release, notifying the
+  owning teams to patch.
 \end{itemize}
 
 \job{Full Stack Developer}{Omnios}{Mar 2022 -- Jan 2023}
@@ -192,9 +189,8 @@ since 2024; currently building AI agents on AWS Bedrock.
   \item Owned developer experience (QoL) for the company's full-stack developers.
   \item Designed project server infrastructure as code with Terraform.
   \item Built data-collection services and social-media crawlers in Node.js and Python.
-  \item Delivered client projects in PHP (Laravel) and Node.js (React, Express).
-  \item[] \textcolor{muted}{\small Client work here is covered by an NDA, so it is
-  described in general terms only.}
+  \item Delivered client projects in PHP (Laravel) and Node.js (React, Express). Client work
+  here is covered by an NDA, so it is described in general terms only.
 \end{itemize}
 
 \job{Senior Full Stack Developer \& Systems Administrator}{Offing Web Solutions}{May 2021 -- Mar 2022}
@@ -233,11 +229,13 @@ then senior.}\par
 \begin{itemize}[leftmargin=1.9em]
   \item Owned integrations with third-party service providers.
   \item Built the APIs behind every platform and service the company offered.
-  \item Supported frontend development of the booking platform.
 \end{itemize}
 
 \subrole{Systems Engineer / Junior Developer}{Spotlio \textbullet{} Apr 2018 -- Dec 2020}
 \begin{itemize}[leftmargin=1.9em]
+  \item Kept the booking platform serving \textbf{peaks of \textasciitilde600 concurrent
+  users}, scaling by hand at first and then \textbf{adopting autoscaling} myself.
+  \item Tuned the database indexes behind the booking platform's heaviest queries.
   \item Built the new version of the booking platform, and features for the application
   management platform.
   \item Developed APIs for third-party integrations, and designed and implemented several
@@ -258,8 +256,8 @@ then senior.}\par
 \section*{Selected Projects}
 \begin{itemize}
   \item \textbf{Self-hosted homelab \& automation platform} --- Proxmox host running a
-  self-hosted LLM agent, Home Assistant with Zigbee devices and supporting services,
-  administered as code. Where I try platform ideas before proposing them at work.
+  self-hosted LLM agent, Home Assistant with Zigbee devices, administered as code --- my
+  testbed for platform ideas before they reach work.
   \item \textbf{\href{https://kyngo.net}{kyngo.net}} --- personal site and technical blog,
   built with Next.js and deployed continuously on every push.
   \item \textbf{This resume} --- written in \LaTeX{} and released automatically by GitHub
@@ -270,19 +268,20 @@ then senior.}\par
 % ---------------- Skills ----------------
 \section*{Technical Skills}
 \skillline{Cloud \& Infrastructure}{AWS (EC2, ECS, Lambda, S3, RDS, ElastiCache, VPC,
-CloudFront, Route~53, API Gateway, Elastic Beanstalk, CloudWatch, SNS, SSM, KMS,
-Certificate Manager, Bedrock), Terraform, Docker, Nginx, Apache, Linux/Unix}
+CloudFront, Route~53, API Gateway, CloudWatch, SSM, KMS, Certificate Manager, Bedrock),
+Terraform, Docker, Nginx, Apache, Linux/Unix}
 \skillline{CI/CD \& Automation}{GitLab CI (incl.\ self-managed GitLab administration),
-GitHub Actions, AWS CodePipeline, CodeBuild, CodeCommit, Git, Bash, pipeline
+GitHub Actions, AWS CodePipeline, CodeBuild, Git, Bash, pipeline
 standardisation at scale}
 \skillline{Observability \& Delivery Metrics}{Datadog, DORA metrics, CloudWatch,
 cloud cost analysis}
-\skillline{AI \& Data Collection}{AWS Bedrock, Kiro, AI agent development, Puppeteer,
-Selenium WebDriver}
-\skillline{Languages}{TypeScript, JavaScript, Python, PHP, Java, Bash, SQL, \LaTeX}
+\skillline{AI \& Automation}{AWS Bedrock, LangGraph, Strands, Kiro, AI agent development,
+Puppeteer, Selenium WebDriver}
+\skillline{Programming}{TypeScript, JavaScript, Python, PHP, Java, Bash, \LaTeX}
 \skillline{Backend}{Node.js, Express, Laravel, Symfony, REST, GraphQL}
 \skillline{Frontend}{React, Next.js, Vue, HTML, CSS, Sass}
-\skillline{Data}{PostgreSQL, MySQL, MariaDB, MongoDB, SQLite}
+\skillline{Data}{PostgreSQL, MySQL, MariaDB, MongoDB, SQLite --- schema design, indexing
+and query tuning}
 \skillline{Security}{Secure development practice, OWASP, SAST, auditing, cryptography,
 PCI~DSS compliance, Wireshark, Nmap, osquery}
 % ---------------------------------------------------------------------
@@ -296,9 +295,11 @@ PCI~DSS compliance, Wireshark, Nmap, osquery}
 
 % ---------------- Certifications ----------------
 \section*{Certifications}
+% NOTE: the AWS SAA was not renewed. Keep it while it is valid (to Oct 2026),
+% then delete the line --- an expired credential reads as a lapse.
 \begin{itemize}
   \item \textbf{AWS Certified Solutions Architect -- Associate} --- Amazon Web Services.
-  Issued Oct 2023, \textbf{valid until Oct 2026}. Credential ID F6LVM9K1V1FQ17W6.
+  Issued Oct 2023, valid to Oct 2026. Credential ID F6LVM9K1V1FQ17W6.
   \item \textbf{Security Engineer Nanodegree} --- Udacity, Apr 2024.
   \href{https://confirm.udacity.com/e/76a1644a-98f6-11ee-aa42-eba581f8d839}{Verify}
   \item \textbf{First Certificate in English (B2)} --- Cambridge English, Sep 2021.
@@ -310,8 +311,7 @@ PCI~DSS compliance, Wireshark, Nmap, osquery}
 % raggedright: the long diploma names cannot be justified in one line without
 % an overfull hbox (text bleeding past the right margin).
 \begingroup\raggedright
-\noindent All at INS Joaquim Mir. CFGS/CFGM are Spanish vocational qualifications (EQF for
-international comparison).
+\noindent All at INS Joaquim Mir (CFGS/CFGM are Spanish vocational diplomas; EQF level shown).
 \begin{itemize}
   \item \textbf{Web Application Development} --- Higher Vocational Diploma (CFGS, EQF~5)
   --- \textit{Class of 2018}
@@ -326,15 +326,13 @@ international comparison).
 \section*{Languages}
 \textbf{Spanish} --- native \quad \textcolor{muted}{\textbullet} \quad
 \textbf{Catalan} --- native \quad \textcolor{muted}{\textbullet} \quad
-\textbf{English} --- professional working proficiency (daily use in an international
-organisation; Cambridge FCE) \quad \textcolor{muted}{\textbullet} \quad
-\textbf{French} --- basic
+\textbf{English} --- professional working proficiency, daily use at work (Cambridge FCE)
+\quad \textcolor{muted}{\textbullet} \quad \textbf{French} --- basic
 
 % ---------------- Beyond work ----------------
 \section*{Beyond Work}
-Traveling, tinkering with self-hosted infrastructure, and --- oddly enough --- assembling
-IKEA furniture. Also a collector of useless facts: a lightning bolt can be up to five times
-hotter than the surface of the sun.
+Traveling, tinkering with self-hosted infrastructure, and --- oddly enough --- assembling IKEA
+furniture.
 
 \vspace{0.6em}
 {\footnotesize\color{muted}Last reviewed: \reviewdate}
